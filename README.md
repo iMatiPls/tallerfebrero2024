@@ -48,6 +48,6 @@ Este proyecto ha sido creado con ❤️ por:
 
 ## 📜 Licencia
 
-Este proyecto está bajo la Licencia Apache 2.0 - consulta el archivo [LICENSE.md](LICENSE.md) para más detalles.
+Este proyecto está bajo la Licencia Apache 2.0 - consulta el archivo [LICENSE](LICENSE) para más detalles.
 
 ---
