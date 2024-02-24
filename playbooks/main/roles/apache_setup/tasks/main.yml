@@ -1,0 +1,64 @@
+---
+- name: Install Apache for Debian/Ubuntu
+  ansible.builtin.apt:
+    name: "{{ pkg_name[ansible_distribution] }}"
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Install Apache for RedHat/Rocky
+  ansible.builtin.yum:
+    name: "{{ pkg_name[ansible_distribution] }}"
+    state: present
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Start and enable Apache
+  ansible.builtin.service:
+    name: "{{ pkg_name[ansible_distribution] }}"
+    state: started
+    enabled: true
+
+- name: Configure Apache as a Reverse Proxy
+  ansible.builtin.blockinfile:
+    path: "{{ apache_config_path[ansible_distribution] }}"
+    block: |
+      <Proxy "balancer://mycluster">
+          BalancerMember "http://{{ hostvars['tomcat_server']['ansible_host'] }}:{{ reverse_proxy_config.port1 }}/sample"
+          BalancerMember "http://{{ hostvars['tomcat_server']['ansible_host'] }}:{{ reverse_proxy_config.port2 }}/sample"
+      </Proxy>
+      ProxyPass        "/" "balancer://mycluster/"
+      ProxyPassReverse "/" "balancer://mycluster/"
+    create: yes
+    owner: "{{ reverse_proxy_config.user }}"
+    group: "{{ reverse_proxy_config.group }}"
+    mode: "{{ reverse_proxy_config.mode }}"
+  notify: restart apache
+
+- name: Enable required Apache modules
+  ansible.builtin.command:
+    cmd: "a2enmod proxy proxy_http proxy_balancer lbmethod_byrequests"
+  when: ansible_distribution == "Ubuntu"
+
+- name: Enable reverse proxy site configuration on Ubuntu
+  ansible.builtin.command:
+    cmd: "a2ensite reverse_proxy.conf"
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install SELinux management library for Python
+  ansible.builtin.yum:
+    name: "{{ 'python3-libsemanage' if ansible_facts['python']['version']['major'] == 3 else 'libsemanage-python' }}"
+    state: present
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Allow Apache to connect to the network (SELinux)
+  ansible.builtin.seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Allow Apache to relay connections (SELinux)
+  ansible.builtin.seboolean:
+    name: httpd_can_network_relay
+    state: yes
+    persistent: yes
+  when: ansible_facts['os_family'] == "RedHat"

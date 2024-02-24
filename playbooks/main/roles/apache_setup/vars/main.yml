@@ -1,0 +1,15 @@
+---
+pkg_name:
+  Rocky: httpd
+  Ubuntu: apache2
+
+apache_config_path:
+  Rocky: /etc/httpd/conf.d/reverse_proxy.conf
+  Ubuntu: /etc/apache2/sites-available/reverse_proxy.conf
+
+reverse_proxy_config:
+  user: root
+  group: root
+  mode: '0644'
+  port1: 8008
+  port2: 8009

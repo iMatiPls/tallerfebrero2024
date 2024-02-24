@@ -1,0 +1,5 @@
+---
+- name: restart apache
+  ansible.builtin.service:
+    name: "{{ pkg_name[ansible_distribution] }}"
+    state: restarted
