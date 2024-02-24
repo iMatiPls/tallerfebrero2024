@@ -42,6 +42,10 @@
         group: "{{ user_settings[ansible_distribution].sudo_group }}"
         create_home: true
 
+    - name: Enable linger for ansible user
+      ansible.builtin.command:
+        cmd: "loginctl enable-linger ansible"
+
     - name: Configure sudo without password for ansible
       ansible.builtin.lineinfile:
         path: /etc/sudoers.d/ansible
