@@ -1,42 +1,54 @@
----
-
-# 🚀 Taller Febrero 2024
+# 🚀 Taller Febrero 2024: Automatización con Ansible
 
 ## 📌 Descripción
 
-Este repositorio 📂 es el núcleo de un proyecto diseñado para automatizar la configuración de un entorno de desarrollo utilizando Ansible. Desarrollado por Matías López e Ignacio Lorenzo como parte de su trabajo final de universidad, este taller abarca la actualización de servidores, la instalación de OpenJDK y Tomcat 8 en contenedores usando Podman, y la configuración de un proxy reverso para acceder de manera segura y eficiente a la aplicación Java. Se espera que los servidores utilizados sean derivados de RHEL o Debian, tales como Rocky Linux o Ubuntu.
+Bienvenidos al repositorio del Taller de Febrero 2024, un proyecto innovador diseñado para automatizar la configuración de entornos de desarrollo utilizando Ansible. Este proyecto es el resultado del esfuerzo colaborativo de Matías López e Ignacio Lorenzo, desarrollado como parte de su proyecto final de universidad.
+
+El taller se centra en la automatización de tareas críticas como la actualización de servidores, la instalación y configuración de OpenJDK y Tomcat 8 en contenedores utilizando Podman, y la configuración de un proxy reverso para asegurar un acceso eficiente y seguro a aplicaciones Java.
 
 ## 🛠 Configuración de Proyecto
 
-El proyecto incluye las siguientes tareas clave, automatizadas mediante Ansible:
+Este proyecto automatiza tareas clave de configuración usando Ansible para eficiencia y seguridad:
 
-1. **Actualización de Servidores** 🔄: Garantiza que ambos servidores estén actualizados con las últimas versiones de seguridad y software.
-2. **Instalación de OpenJDK y Tomcat 8 en Contenedores** ☕🐱: Configura un servidor con OpenJDK y Tomcat 8, desplegando la [aplicación de muestra de Tomcat](https://tomcat.apache.org/tomcat-8.0-doc/appdev/sample/) en contenedores gestionados por Podman.
-3. **Configuración de Proxy Reverso** 🔄↩️: Establece un proxy reverso en el otro servidor para un acceso optimizado a la aplicación Java.
+1. **Actualización de Servidores** 🔄: Mantiene los servidores actualizados para seguridad y rendimiento óptimos.
+2. **OpenJDK y Tomcat en Contenedores** ☕🐱: Instala OpenJDK y Tomcat 8, desplegando la [aplicación de muestra de Tomcat](https://tomcat.apache.org/tomcat-8.0-doc/appdev/sample/) mediante Podman.
+3. **Proxy Reverso** 🔄↩️: Establece un proxy reverso con Apache para acceso optimizado a aplicaciones Java.
+4. **Configuración del Firewall** 🔥: Asegura el entorno mediante reglas de firewall, protegiendo los servicios y gestionando el acceso de manera efectiva.
 
-## 🗂 Estructura del Repositorio
+Cada rol de Ansible se ha creado pensando en la reusabilidad y adaptabilidad, permitiendo personalizaciones según las necesidades. Para más información sobre la implementación, consulta la sección 🚀 [Cómo Empezar](#-cómo-empezar).
 
-Este repositorio está organizado de la siguiente manera:
 
-- `playbooks/`: Contiene los playbooks de Ansible necesarios para automatizar las tareas mencionadas.
-- `run.sh`: Script para ejecutar el proyecto, facilitando el proceso de despliegue y configuración.
+## 🗂 Estructura del Proyecto
 
-## 🚀 Cómo Iniciar
+El proyecto está organizado en varias carpetas y archivos clave que facilitan la comprensión y el uso de Ansible para la automatización:
 
-Sigue estos pasos para configurar tu entorno:
+- `ansible.cfg`: Configuración principal de Ansible.
+- `inventory`: Inventario de Ansible con la definición de hosts.
+- `playbooks/`: Directorio que contiene los playbooks de Ansible.
+  - `bootstrap.yml`: Playbook para la configuración inicial del entorno.
+  - `main/`: Directorio principal que incluye el playbook `main.yml` y la definición de roles.
+    - `roles/`: Roles de Ansible para tareas específicas como `apache_setup`, `firewall`, `tomcat_setup`, y `update_server`.
+- `run.sh`: Script para ejecutar el proyecto y asegurar la instalación de colecciones de Ansible necesarias.
 
-1. 📥 **Clonar el repositorio**: Comienza clonando este repositorio en tu máquina local.
-2. 📋 **Preparativos**: Asegúrate de tener Ansible instalado y acceso a dos servidores (uno para la aplicación y otro para el proxy reverso), preferiblemente derivados de RHEL o Debian.
-3. 🎛 **Configuración**: Revisa y ajusta los playbooks de Ansible de acuerdo a tus necesidades.
-4. 🖥 **Ejecución**: Ejecuta `run.sh` para configurar tus servidores de manera automática.
+## 🚀 Cómo Empezar
+
+Para utilizar este proyecto y empezar con la automatización, sigue estos pasos:
+
+1. **Pre-requisitos**: Asegúrate de tener Ansible instalado en tu máquina. Este proyecto fue desarrollado con Ansible versión core 2.14.9.
+
+2. **Configura tu Inventario**: Edita el archivo `inventory` para reflejar tus hosts de destino.
+
+3. **Ejecuta el Script `run.sh`**: Este script preparará tu entorno ejecutando comandos necesarios y asegurando que las colecciones de Ansible estén instaladas.
+
 
 ## 📋 Requisitos
 
-Para empezar, necesitarás:
+Antes de sumergirte en la automatización con este proyecto, asegúrate de tener todo listo. Aquí te detallamos lo que necesitarás:
 
-- Ansible instalado en tu máquina local.
-- Dos servidores accesibles para la configuración, basados en derivados de RHEL o Debian.
-- Conocimientos básicos en administración de sistemas y contenedores.
+- **Ansible**: Deberás tener Ansible instalado en tu máquina local.
+
+- **Servidores de Destino**: Dos servidores, deben estar basados en derivados de RHEL (como CentOS o Rocky) o Debian (como Ubuntu). Es crucial que estos servidores tengan un usuario configurado con el mismo nombre de usuario y contraseña en ambos, y que este usuario tenga permisos de `sudo` con o sin contraseña.
+
 
 ## 👥 Autores
 
@@ -49,5 +61,3 @@ Este proyecto ha sido creado con ❤️ por:
 ## 📜 Licencia
 
 Este proyecto está bajo la Licencia Apache 2.0 - consulta el archivo [LICENSE](LICENSE) para más detalles.
-
----
