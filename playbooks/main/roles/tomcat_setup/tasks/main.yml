@@ -1,34 +1,40 @@
 ---
-- name: Install Podman and Git on Debian
+- name: Install Podman on Debian
   ansible.builtin.apt:
-    name: git, podman
+    name: podman
     state: present
     update_cache: yes
   when: ansible_facts['os_family'] == "Debian"
   become: yes
 
-- name: Install Podman and Git on RHEL
+- name: Install Podman on RHEL
   ansible.builtin.yum:
-    name: git, podman
+    name: podman
     state: present
   when: ansible_facts['os_family'] == "RedHat"
   become: yes
 
-- name: Check if the .git directory exists
-  ansible.builtin.stat:
-    path: "{{ repository.dest }}/.git"
-  register: git_directory_check
+- name: Ensure ~/tomcat_container directory exists
+  ansible.builtin.file:
+    path: "{{ container.dest }}"
+    state: directory
+    mode: '0755'
 
-- name: Clone Tomcat tutorial repository if not already cloned
-  ansible.builtin.git:
-    repo: "{{ repository.url }}"
-    dest: "{{ repository.dest }}"
-    version: "{{ repository.version }}"
-  when: not git_directory_check.stat.exists
+- name: Copy Dockerfile to remote server
+  ansible.builtin.copy:
+    src: Dockerfile
+    dest: "{{ container.dest }}/Dockerfile"
+    mode: '0644'
+
+- name: Copy sample.war to remote server
+  ansible.builtin.copy:
+    src: sample.war
+    dest: "{{ container.dest }}/sample.war"
+    mode: '0644'
 
 - name: Build Tomcat container image with Podman
   containers.podman.podman_image:
-    path: "{{ repository.dest }}"
+    path: "{{ container.dest }}"
     name: "{{ image.name }}"
     build:
       format: "{{ image.format }}"
@@ -40,12 +46,6 @@
     state: started
     ports:
       - "{{ container_instances.demo1.port }}"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
 
 - name: Run another Tomcat container instance 'demo2' on port 8009 for load balancing
   containers.podman.podman_container:
@@ -54,9 +54,3 @@
     state: started
     ports:
       - "{{ container_instances.demo2.port }}"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s

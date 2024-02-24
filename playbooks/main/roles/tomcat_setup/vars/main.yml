@@ -1,12 +1,10 @@
 ---
-repository:
-  url: "https://github.com/qmatiaslopez/docker-tomcat-tutorial"
-  dest: ~/docker-tomcat-tutorial
-  version: "master"
+container:
+  dest: ~/tomcat_container
 
 image:
   name: "tomcat-demo:1"
-  format: docker
+  format: "docker"
 
 container_instances:
   demo1:
