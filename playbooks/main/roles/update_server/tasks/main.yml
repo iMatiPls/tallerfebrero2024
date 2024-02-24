@@ -1,0 +1,14 @@
+---
+- name: Update all packages using APT
+  ansible.builtin.apt:
+    update_cache: yes
+    upgrade: yes
+  when: ansible_facts['os_family'] == "Debian"
+  notify: reboot
+
+- name: Update all packages using YUM
+  ansible.builtin.yum:
+    name: '*'
+    state: latest
+  when: ansible_facts['os_family'] == "RedHat"
+  notify: reboot
