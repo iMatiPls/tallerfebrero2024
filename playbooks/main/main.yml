@@ -1,0 +1,29 @@
+---
+- name: Update servers to latest packages
+  hosts: all
+  roles:
+    - update_server
+  become: yes
+  tags:
+    - update
+
+- name: Configure Firewall for Tomcat and Apache Servers
+  hosts: all
+  become: yes
+  roles:
+    - firewall
+
+- name: Install and configure Tomcat
+  hosts: tomcat_server
+  roles:
+    - tomcat_setup
+  tags:
+    - tomcat
+
+- name: Install and configure Apache
+  hosts: apache_server
+  roles:
+    - apache_setup
+  become: yes
+  tags:
+    - apache
