@@ -1,0 +1,65 @@
+---
+- name: Bootstrap to create SSH keys for distribution
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Verify if the SSH key for Ansible exists
+      ansible.builtin.stat:
+        path: ~/.ssh/ansible
+      register: ssh_key
+
+    - name: Create the SSH key for Ansible if it does not exist
+      community.crypto.openssh_keypair:
+        path: ~/.ssh/ansible
+        type: ed25519
+      when: not ssh_key.stat.exists
+
+    - name: Fetch the public SSH key
+      ansible.builtin.slurp:
+        src: ~/.ssh/ansible.pub
+      register: ssh_public_key
+
+- name: Bootstrap to configure ansible user and copy SSH key
+  hosts: all
+  become: true
+  become_method: sudo
+  vars:
+    user_settings:
+      Rocky:
+        sudo_group: wheel
+      Ubuntu:
+        sudo_group: sudo
+  tasks:
+    - name: Set ansible public key variable
+      set_fact:
+        ansible_public_key: "{{ hostvars['localhost']['ssh_public_key']['content'] | b64decode }}"
+      delegate_to: localhost
+      run_once: true
+
+    - name: Create ansible user
+      ansible.builtin.user:
+        name: ansible
+        group: "{{ user_settings[ansible_distribution].sudo_group }}"
+        create_home: true
+
+    - name: Configure sudo without password for ansible
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers.d/ansible
+        state: present
+        line: 'ansible ALL=(ALL) NOPASSWD:ALL'
+        create: true
+        validate: 'visudo -cf %s'
+
+    - name: Ensure .ssh directory exists for ansible user
+      ansible.builtin.file:
+        path: "/home/ansible/.ssh"
+        state: directory
+        owner: ansible
+        group: ansible
+        mode: '0700'
+
+    - name: Add SSH key to authorized_keys for ansible user
+      ansible.builtin.authorized_key:
+        user: ansible
+        state: present
+        key: "{{ ansible_public_key }}"
