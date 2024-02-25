@@ -2,7 +2,7 @@
 
 ## 📌 Descripción
 
-Bienvenidos al repositorio del Taller de Febrero 2024, un proyecto innovador diseñado para automatizar la configuración de entornos de desarrollo utilizando Ansible. Este proyecto es el resultado del esfuerzo colaborativo de Matías López e Ignacio Lorenzo, desarrollado como parte de su proyecto final de universidad.
+Bienvenidos al repositorio del Taller de Febrero 2024, un proyecto diseñado para automatizar la configuración de entornos de desarrollo utilizando Ansible. Este proyecto es el resultado del esfuerzo colaborativo de Matías López e Ignacio Lorenzo, desarrollado como parte de su obligatorio para el Taller de servidores Linux.
 
 El taller se centra en la automatización de tareas críticas como la actualización de servidores, la instalación y configuración de OpenJDK y Tomcat 8 en contenedores utilizando Podman, y la configuración de un proxy reverso para asegurar un acceso eficiente y seguro a aplicaciones Java.
 
