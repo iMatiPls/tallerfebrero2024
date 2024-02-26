@@ -34,11 +34,13 @@ El proyecto está organizado en varias carpetas y archivos clave que facilitan l
 
 Para utilizar este proyecto y empezar con la automatización, sigue estos pasos:
 
-1. **Pre-requisitos**: Asegúrate de tener Ansible instalado en tu máquina. Este proyecto fue desarrollado con Ansible versión core 2.14.9.
+1. **Descarga del repositorio**: Descarga este repositorio por medio del siguiente comando `git clone https://github.com/qmatiaslopez/tallerfebrero2024.git`.
 
-2. **Configura tu Inventario**: Edita el archivo `inventory` para reflejar tus hosts de destino.
+2. **Pre-requisitos**: Asegúrate de tener Ansible instalado en tu máquina. Este proyecto fue desarrollado con Ansible versión core 2.14.9.
 
-3. **Ejecuta el Script `run.sh`**: Este script preparará tu entorno ejecutando comandos necesarios y asegurando que las colecciones de Ansible estén instaladas.
+3. **Configura tu Inventario**: Edita el archivo `inventory` para reflejar tus hosts de destino.
+
+4. **Ejecuta el Script `run.sh`**: Este script preparará tu entorno ejecutando comandos necesarios y asegurando que las colecciones de Ansible estén instaladas.
 
 
 ## 📋 Requisitos
