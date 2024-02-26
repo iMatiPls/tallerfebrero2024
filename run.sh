@@ -98,3 +98,8 @@ echo -e "${BLUE}=========================================================${NC}"
 echo -e "${CYAN}             Ejecución del Playbook Principal            ${NC}"
 echo -e "${BLUE}=========================================================${NC}"
 ansible-playbook ./playbooks/main/main.yml
+
+echo
+echo -e "${BLUE}=========================================================${NC}"
+echo -e "${GREEN}                Gracias por ejecutarme!                 ${NC}"
+echo -e "${BLUE}=========================================================${NC}"
