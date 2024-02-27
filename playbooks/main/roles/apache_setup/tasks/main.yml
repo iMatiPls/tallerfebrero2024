@@ -17,17 +17,10 @@
     state: started
     enabled: true
 
-- name: Configure Apache as a Reverse Proxy
-  ansible.builtin.blockinfile:
-    path: "{{ apache_config_path[ansible_facts['os_family']] }}"
-    block: |
-      <Proxy "balancer://mycluster">
-          BalancerMember "http://{{ hostvars['tomcat_server']['ansible_host'] }}:{{ reverse_proxy_config.port1 }}/sample"
-          BalancerMember "http://{{ hostvars['tomcat_server']['ansible_host'] }}:{{ reverse_proxy_config.port2 }}/sample"
-      </Proxy>
-      ProxyPass        "/" "balancer://mycluster/"
-      ProxyPassReverse "/" "balancer://mycluster/"
-    create: yes
+- name: Configure Apache as a Reverse Proxy using a template
+  ansible.builtin.template:
+    src: apache_reverse_proxy.conf.j2
+    dest: "{{ apache_config_path[ansible_facts['os_family']] }}"
     owner: "{{ reverse_proxy_config.user }}"
     group: "{{ reverse_proxy_config.group }}"
     mode: "{{ reverse_proxy_config.mode }}"

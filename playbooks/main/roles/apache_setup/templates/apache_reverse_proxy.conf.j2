@@ -1,0 +1,6 @@
+<Proxy "balancer://mycluster">
+    BalancerMember "http://{{ hostvars['tomcat_server']['ansible_host'] }}:{{ reverse_proxy_config.port1 }}/sample"
+    BalancerMember "http://{{ hostvars['tomcat_server']['ansible_host'] }}:{{ reverse_proxy_config.port2 }}/sample"
+</Proxy>
+ProxyPass        "/" "balancer://mycluster/"
+ProxyPassReverse "/" "balancer://mycluster/"
