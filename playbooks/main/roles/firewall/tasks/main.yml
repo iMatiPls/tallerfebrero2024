@@ -4,7 +4,7 @@
     state: present
   when: ansible_facts['os_family'] == "RedHat"
 
-- name: Ensure firewalld is installed on Ubuntu
+- name: Ensure firewalld is installed on Debian
   ansible.builtin.apt:
     name: firewalld
     state: present

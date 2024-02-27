@@ -1,11 +1,11 @@
 ---
 pkg_name:
-  Rocky: httpd
-  Ubuntu: apache2
+  RedHat: httpd
+  Debian: apache2
 
 apache_config_path:
-  Rocky: /etc/httpd/conf.d/reverse_proxy.conf
-  Ubuntu: /etc/apache2/sites-available/reverse_proxy.conf
+  RedHat: /etc/httpd/conf.d/reverse_proxy.conf
+  Debian: /etc/apache2/sites-available/reverse_proxy.conf
 
 reverse_proxy_config:
   user: root

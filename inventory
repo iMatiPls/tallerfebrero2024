@@ -2,4 +2,4 @@
 tomcat_server ansible_host=192.168.56.2
 
 [apache_servers]
-apache_server ansible_host=192.168.56.3
+apache_server ansible_host=192.168.56.107

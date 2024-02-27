@@ -22,12 +22,11 @@
 - name: Bootstrap to configure ansible user and copy SSH key
   hosts: all
   become: true
-  become_method: sudo
   vars:
     user_settings:
-      Rocky:
+      RedHat:
         sudo_group: wheel
-      Ubuntu:
+      Debian:
         sudo_group: sudo
   tasks:
     - name: Set ansible public key variable
@@ -39,7 +38,7 @@
     - name: Create ansible user
       ansible.builtin.user:
         name: ansible
-        group: "{{ user_settings[ansible_distribution].sudo_group }}"
+        group: "{{ user_settings[ansible_facts['os_family']].sudo_group }}"
         create_home: true
 
     - name: Enable linger for ansible user
