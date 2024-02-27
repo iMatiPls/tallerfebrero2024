@@ -58,7 +58,7 @@
         path: "/home/ansible/.ssh"
         state: directory
         owner: ansible
-        group: ansible
+        group: "{{ user_settings[ansible_facts['os_family']].sudo_group }}"
         mode: '0700'
 
     - name: Add SSH key to authorized_keys for ansible user
